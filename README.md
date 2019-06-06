@@ -57,6 +57,7 @@ This fork and most of the additional customizations have been developed by mysel
 (The MIT License)
 
 Copyright (c) 2016-2019 Jed Watson
+
 Copyright (c) 2018-2019 Luca Zonarelli
 
 Permission is hereby granted, free of charge, to any person obtaining
