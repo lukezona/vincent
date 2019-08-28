@@ -1,0 +1,26 @@
+ci-thumbs-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.ci-thumb {
+  .ui-box();
+  margin-bottom: @ui-spacer;
+  margin-right: @ui-spacer;
+  text-align: center;
+
+  input, button {
+    margin-top: @ui-spacer;
+  }
+
+  &.ci-thumb--flex {
+    display: flex;
+
+    & > a {
+      margin-right: @ui-spacer;
+    }
+
+  }
+
+}

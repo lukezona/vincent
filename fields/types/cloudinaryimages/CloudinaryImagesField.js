@@ -59,6 +59,7 @@ module.exports = Field.create({
 					width: 900,
 					secure: props.secure,
 				}),
+				onChange: props.onChange,
 			}, index);
 		}) : [];
 		return { thumbnails, uploadFieldPath };
@@ -288,19 +289,20 @@ module.exports = Field.create({
 			</div>
 		);
 	},
-	renderUI () {
+	renderUI (hide_field) {
 		const { label, note, path } = this.props;
 		const { thumbnails } = this.state;
-
+		const styles = {};
+		if (hide_field) { styles.display = 'none'; }
 		return (
-			<FormField label={label} className="field-type-cloudinaryimages" htmlFor={path}>
-				<div>
+			<FormField label={label} className="field-type-cloudinaryimages" htmlFor={path} style={styles}>
+				<div className='ci-thumbs-wrapper'>
 					{thumbnails}
 				</div>
 				{this.renderValueInput()}
 				{this.renderFileInput()}
 				{this.renderToolbar()}
-				{!!note && <FormNote note={note} />}
+				{!!note && <FormNote html={note} />}
 				{this.renderLightbox()}
 			</FormField>
 		);

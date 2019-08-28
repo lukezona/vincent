@@ -102,10 +102,10 @@ module.exports = Field.create({
 
 	renderNote () {
 		if (!this.props.note) return null;
-		return <FormNote note={this.props.note} />;
+		return <FormNote html={this.props.note} />;
 	},
 
-	renderUI () {
+	renderUI (hide_field) {
 		var input;
 		if (this.shouldRenderField()) {
 			input = (
@@ -147,8 +147,10 @@ module.exports = Field.create({
 				</FormInput>
 			);
 		}
+		const styles = {};
+		if (hide_field) { styles.display = 'none'; }
 		return (
-			<FormField label={this.props.label} className="field-type-datetime" htmlFor={this.getInputName(this.props.path)}>
+			<FormField label={this.props.label} className="field-type-datetime" htmlFor={this.getInputName(this.props.path)} style={styles}>
 				{input}
 				{this.renderNote()}
 			</FormField>

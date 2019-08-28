@@ -156,6 +156,7 @@ keystone.Field = require('./fields/types/Type');
 keystone.Field.Types = require('./lib/fieldTypes');
 keystone.Keystone = Keystone;
 keystone.List = require('./lib/list')(keystone);
+keystone.List.Cache = require('./lib/list/cached-queries');
 keystone.Storage = require('./lib/storage');
 keystone.View = require('./lib/view');
 

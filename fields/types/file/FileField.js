@@ -15,8 +15,10 @@ import {
 import FileChangeMessage from '../../components/FileChangeMessage';
 import HiddenFileInput from '../../components/HiddenFileInput';
 import ImageThumbnail from '../../components/ImageThumbnail';
+import _ from 'lodash';
 
 let uploadInc = 1000;
+const ICON_EXTS = require('./FileIcons');
 
 const buildInitialState = (props) => ({
 	action: null,
@@ -132,10 +134,15 @@ module.exports = Field.create({
 
 	renderFileNameAndChangeMessage () {
 		const href = this.props.value ? this.props.value.url : undefined;
+		const ext = (this.props.value && this.props.value.filename) ? this.props.value.filename.split('.').pop() : undefined;
+		
+		let iconName = '_blank';
+		if (_.includes(ICON_EXTS, ext)) iconName = ext;
 		return (
 			<div>
 				{(this.hasFile() && !this.state.removeExisting) ? (
 					<FileChangeMessage component={href ? 'a' : 'span'} href={href} target="_blank">
+						<img key="file-type-icon" className="file-icon" src={Keystone.adminPath + '/images/icons/32/' + iconName + '.png'} />
 						{this.getFilename()}
 					</FileChangeMessage>
 				) : null}
@@ -212,7 +219,7 @@ module.exports = Field.create({
 			</ImageThumbnail>
 		);
 	},
-	renderUI () {
+	renderUI (hide_field) {
 		const { label, note, path, thumb } = this.props;
 		const isImage = this.isImage();
 		const hasFile = this.hasFile();
@@ -231,9 +238,11 @@ module.exports = Field.create({
 				{hasFile && this.renderClearButton()}
 			</div>
 		);
+		const styles = {};
+		if (hide_field) { styles.display = 'none'; }
 		return (
 			<div data-field-name={path} data-field-type="file">
-				<FormField label={label} htmlFor={path}>
+				<FormField label={label} htmlFor={path} style={styles}>
 					{this.shouldRenderField() ? (
 						<div>
 							{previews}

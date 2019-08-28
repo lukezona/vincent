@@ -60,7 +60,7 @@ module.exports = Field.create({
 		);
 	},
 
-	renderUI () {
+	renderUI (hide_field) {
 		if (!this.props.value.exists) {
 			return (
 				<FormField label={this.props.label}>
@@ -68,9 +68,11 @@ module.exports = Field.create({
 				</FormField>
 			);
 		}
+		const styles = {};
+		if (hide_field) { styles.display = 'none'; }
 		return (
 			<div>
-				<FormField key="provider" label={this.props.label}>
+				<FormField key="provider" label={this.props.label} style={styles}>
 					<FormInput noedit>{this.props.value.providerName} {this.props.value.type}</FormInput>
 				</FormField>
 				{this.renderValue('title', 'Title')}

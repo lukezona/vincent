@@ -28,6 +28,7 @@ var DEFAULT_OPTION_KEYS = [
 	'hidden',
 	'collapse',
 	'dependsOn',
+	'showOn',	      //	hides a field in the UI without removing it
 	'autoCleanup',
 	'thumb',
 ];

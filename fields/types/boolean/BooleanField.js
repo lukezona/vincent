@@ -35,11 +35,12 @@ module.exports = Field.create({
 			/>
 		);
 	},
-	renderUI () {
+	renderUI (hide_field) {
 		const { indent, value, label, path } = this.props;
-
+		const styles = {};
+		if (hide_field) { styles.display = 'none'; }
 		return (
-			<div data-field-name={path} data-field-type="boolean">
+			<div data-field-name={path} data-field-type="boolean" style={styles}>
 				<FormField offsetAbsentLabel={indent}>
 					<label style={{ height: '2.3em' }}>
 						{this.renderFormInput()}

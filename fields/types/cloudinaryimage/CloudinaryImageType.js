@@ -23,6 +23,7 @@ var DEFAULT_OPTIONS = {
 
 function getEmptyValue () {
 	return {
+		alt: '',
 		public_id: '',
 		version: 0,
 		signature: '',
@@ -109,6 +110,7 @@ cloudinaryimage.prototype.addToSchema = function (schema) {
 		folder: this.path + '.folder',
 		// form paths
 		select: this.path + '_select',
+		alt: this.path + '.alt',
 	};
 
 	var schemaPaths = this._path.addTo({}, {
@@ -121,6 +123,7 @@ cloudinaryimage.prototype.addToSchema = function (schema) {
 		width: Number,
 		height: Number,
 		secure_url: String,
+		alt: String,
 	});
 
 	schema.add(schemaPaths);
@@ -404,7 +407,12 @@ cloudinaryimage.prototype.updateItem = function (item, data, files, callback) {
 	if (typeof value === 'string' && value.substr(0, 7) === 'upload:') {
 		uploadedFile = files[value.substr(7)];
 	} else if (typeof value === 'string' && /^(data:[a-z\/]+;base64)|(https?\:\/\/)/.test(value)) {
-		uploadedFile = { path: value };
+		// uploadedFile = { path: value };
+		try {
+			uploadedFile = JSON.parse(value);
+		} catch (e) {
+			uploadedFile = { path: value };
+		}
 	} else {
 		uploadedFile = this.getValueFromData(files) || this.getValueFromData(files, '_upload');
 	}
@@ -444,7 +452,7 @@ cloudinaryimage.prototype.updateItem = function (item, data, files, callback) {
 				if (result.error) {
 					return callback(result.error);
 				} else {
-					item.set(field.path, result);
+					item.set(field.path, Object.assign(result, { alt: data[this.path + 'alt'] }));
 					return callback();
 				}
 			}, uploadOptions);
@@ -456,6 +464,11 @@ cloudinaryimage.prototype.updateItem = function (item, data, files, callback) {
 	// Empty / null values reset the field
 	if (value === null || value === '' || (typeof value === 'object' && !Object.keys(value).length)) {
 		value = getEmptyValue();
+	}
+	try {
+		value = JSON.parse(value);
+	} catch (e) {
+		//
 	}
 
 	// If there is a valid value at this point, set it on the field

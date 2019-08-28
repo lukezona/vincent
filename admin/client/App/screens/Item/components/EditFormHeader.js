@@ -20,6 +20,7 @@ export const EditFormHeader = React.createClass({
 	getInitialState () {
 		return {
 			searchString: '',
+			note: false,
 		};
 	},
 	toggleCreate (visible) {
@@ -42,6 +43,7 @@ export const EditFormHeader = React.createClass({
 			<ToolbarSection left>
 				{this.renderDrilldownItems()}
 				{this.renderSearch()}
+				{this.renderNoteTrigger()}
 			</ToolbarSection>
 		);
 	},
@@ -147,11 +149,47 @@ export const EditFormHeader = React.createClass({
 			</GlyphButton>
 		);
 	},
+	toggleNoteClick () {
+		this.setState({
+			note: !this.state.note
+		});
+	},
+	renderNoteTrigger () {
+		if (this.props.list.note) {
+			const noteStyles = { paddingRight: 0 };
+			return (
+				<GlyphButton
+					component={Link}
+					data-e2e-editform-header-back
+					glyph="info"
+					position="left"
+					style={noteStyles}
+					onClick={this.toggleNoteClick}
+					variant="link"
+				>
+					Note
+				</GlyphButton>
+			);
+		}
+	},
+	renderNote () {
+		if (this.props.list.note) {
+			return (
+				<ToolbarSection style={{clear:"both", display:"block"}}>
+					{ this.state.note
+						? <div style={{padding:"1em"}} dangerouslySetInnerHTML={{__html: this.props.list.note}}></div>
+						: null
+					}
+				</ToolbarSection>
+			)
+		}
+	},
 	render () {
 		return (
 			<Toolbar>
 				{this.renderDrilldown()}
 				{this.renderInfo()}
+				{this.renderNote()}
 			</Toolbar>
 		);
 	},

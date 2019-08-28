@@ -197,9 +197,11 @@ module.exports = Field.create({
 		return <FormNote html={this.props.note} />;
 	},
 
-	renderUI () {
+	renderUI (hide_field) {
+		const styles = {};
+		if (hide_field) { styles.display = 'none'; }
 		return (
-			<FormField label={this.props.label} className="field-type-localfiles" htmlFor={this.props.path}>
+			<FormField label={this.props.label} className="field-type-localfiles" htmlFor={this.props.path} style={styles}>
 				{this.renderFieldAction()}
 				{this.renderUploadsField()}
 				{this.renderFileField()}

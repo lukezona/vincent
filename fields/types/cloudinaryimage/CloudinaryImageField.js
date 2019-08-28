@@ -32,6 +32,7 @@ module.exports = Field.create({
 		note: PropTypes.string,
 		path: PropTypes.string.isRequired,
 		value: PropTypes.shape({
+			alt: PropTypes.string,
 			format: PropTypes.string,
 			height: PropTypes.number,
 			public_id: PropTypes.string,
@@ -212,19 +213,48 @@ module.exports = Field.create({
 				onClick={shouldOpenLightbox && this.openLightbox}
 				mask={mask}
 				target="__blank"
-				style={{ float: 'left', marginRight: '1em' }}
+				style={{ marginRight: '1em' }}
 			>
 				<img src={this.getImageSource()} style={{ height: 90 }} />
 			</ImageThumbnail>
 		);
 	},
+	fieldChanged (fieldPath, event) {
+		const { value = {}, path, onChange } = this.props;
+		onChange({
+			path,
+			value: {
+				...value,
+				[fieldPath]: event.target.value
+			},
+		});
+	},
+	makeChanger (fieldPath) {
+		return this.fieldChanged.bind(this, fieldPath);
+	},
 	renderFileNameAndOptionalMessage (showChangeMessage = false) {
+		const { value = {}, path } = this.props;
+		const fieldPath = 'alt';
 		return (
 			<div>
 				{this.hasImage() ? (
-					<FileChangeMessage>
-						{this.getFilename()}
-					</FileChangeMessage>
+					<div>
+						<FileChangeMessage style={{width: '100%'}}>
+							{this.getFilename()}
+						</FileChangeMessage>
+						
+						<FormInput
+							style={{ display: 'inline-block', marginBottom: '1em', marginTop: '1em' }}
+							name={this.state.userSelectedFile ? path + '.' + fieldPath : null}
+							onChange={this.makeChanger(fieldPath)}
+							placeholder='alt text'
+							value={value[fieldPath] || ''}
+						/>
+						
+						{this.state.userSelectedFile || this.state.removeExisting ? null : (
+							<input type="hidden" name={path} value={JSON.stringify(value)} />
+						) }
+					</div>
 				) : null}
 				{showChangeMessage && this.renderChangeMessage()}
 			</div>
@@ -311,11 +341,11 @@ module.exports = Field.create({
 		}
 	},
 
-	renderUI () {
+	renderUI (hide_field) {
 		const { label, note, path } = this.props;
 
 		const imageContainer = (
-			<div style={this.hasImage() ? { marginBottom: '1em' } : null}>
+			<div style={this.hasImage() ? { display: 'flex', marginBottom: '1em' } : null}>
 				{this.hasImage() && this.renderImagePreview()}
 				{this.hasImage() && this.renderFileNameAndOptionalMessage(this.shouldRenderField())}
 			</div>
@@ -324,12 +354,14 @@ module.exports = Field.create({
 		const toolbar = this.shouldRenderField()
 			? this.renderImageToolbar()
 			: <FormInput noedit />;
-
+		
+		const styles = {};
+		if (hide_field) { styles.display = 'none'; }
 		return (
-			<FormField label={label} className="field-type-cloudinaryimage" htmlFor={path}>
+			<FormField label={label} className="field-type-cloudinaryimage" htmlFor={path} style={styles}>
 				{imageContainer}
 				{toolbar}
-				{!!note && <FormNote note={note} />}
+				{!!note && <FormNote html={note} />}
 				{this.renderLightbox()}
 				{this.renderFileInput()}
 				{this.renderActionInput()}

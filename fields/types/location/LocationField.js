@@ -255,7 +255,7 @@ module.exports = Field.create({
 		);
 	},
 
-	renderUI () {
+	renderUI (hide_field) {
 
 		if (!this.shouldRenderField()) {
 			return (
@@ -270,9 +270,11 @@ module.exports = Field.create({
 		/* eslint-enable */
 
 		const { label, path } = this.props;
+		const styles = {};
+		if (hide_field) { styles.display = 'none'; }
 		return (
 			<div data-field-name={path} data-field-type="location">
-				<FormField label={label} htmlFor={path}>
+				<FormField label={label} htmlFor={path} style={styles}>
 					{showMore}
 				</FormField>
 				{this.renderField('number', 'PO Box / Shop', true, true)}

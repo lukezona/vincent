@@ -36,4 +36,22 @@
 /* The path to react-select is dynamically detected by KeystoneJS */
 @import "@{reactSelectPath}/less/select.less";
 
+// Variabili comuni
+// ------------------------------
+@ui-background-color: #ccc;
+@ui-border-color: #ccc;
+@ui-border-radius: @border-radius-base;
+@ui-spacer: .75em;
+@ui-spacer--small: .5em;
+
+.ui-box() {
+  background: fade(@ui-background-color, 20%);
+  border: 1px solid @ui-border-color;
+  border-radius: @ui-border-radius;
+  padding: @ui-spacer @ui-spacer--small;
+}
+
+
 @import "../../../../fields/types/markdown/less/bootstrap-markdown.less";
+@import "../../../../fields/types/cloudinaryimage/less/bootstrap-cloudinaryimage.less";
+@import "../../../../fields/types/file/less/bootstrap-file.less";

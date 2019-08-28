@@ -16,6 +16,7 @@ function getEmptyValue () {
 		width: 0,
 		height: 0,
 		secure_url: '',
+		alt: '',
 	};
 }
 
@@ -110,6 +111,7 @@ cloudinaryimages.prototype.addToSchema = function (schema) {
 		width: Number,
 		height: Number,
 		secure_url: String,
+		alt: String,
 	});
 
 	// Generate cloudinary folder used to upload/select images
@@ -345,7 +347,7 @@ cloudinaryimages.prototype.updateItem = function (item, data, files, callback) {
 		}
 		return value;
 	});
-	values = _.flatten(values);
+	values = _.flattenDeep(values);
 
 	async.map(values, function (value, next) {
 		if (typeof value === 'object' && 'public_id' in value) {
@@ -381,7 +383,7 @@ cloudinaryimages.prototype.updateItem = function (item, data, files, callback) {
 			return next();
 		}
 	}, function (err, result) {
-		cleanUp(oldValues, values);
+		cleanUp(oldValues, values.filter(v => v));
 		if (err) return callback(err);
 		result = result.filter(truthy);
 		item.set(field.path, result);

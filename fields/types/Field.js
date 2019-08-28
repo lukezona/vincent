@@ -80,14 +80,16 @@ var Base = module.exports.Base = {
 	renderValue () {
 		return <FormInput noedit>{this.props.value}</FormInput>;
 	},
-	renderUI () {
+	renderUI (hide_field) {
 		var wrapperClassName = classnames(
 			'field-type-' + this.props.type,
 			this.props.className,
 			{ 'field-monospace': this.props.monospace }
 		);
+		const styles = {};
+		if (hide_field) { styles.display = 'none'; }
 		return (
-			<FormField htmlFor={this.props.path} label={this.props.label} className={wrapperClassName} cropLabel>
+			<FormField htmlFor={this.props.path} label={this.props.label} className={wrapperClassName} style={styles} cropLabel>
 				<div className={'FormField__inner field-size-' + this.props.size}>
 					{this.shouldRenderField() ? this.renderField() : this.renderValue()}
 				</div>
@@ -145,7 +147,8 @@ module.exports.create = function (spec) {
 			if (this.state.isCollapsed) {
 				return this.renderCollapse();
 			}
-			return this.renderUI();
+			const hide = !evalDependsOn(this.props.showOn, this.props.values);
+			return this.renderUI(hide);
 		},
 	};
 
