@@ -1,6 +1,6 @@
 {
   "name": "vincent",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Web Application Framework and Admin GUI / Content Management System built on Express.js and Mongoose",
   "main": "index.js",
   "repository": {

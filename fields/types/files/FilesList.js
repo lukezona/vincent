@@ -1,8 +1,8 @@
-import FileChangeMessage from 'keystone/fields/components/FileChangeMessage';
+import FileChangeMessage from '../../components/FileChangeMessage';
 import React, { PropTypes } from 'react';
-import { Button } from 'keystone/admin/client/App/elemental';
+import { Button } from '../../../admin/client/App/elemental';
 import _ from 'lodash';
-import ImageThumbnail from 'keystone/fields/components/ImageThumbnail';
+import ImageThumbnail from '../../components/ImageThumbnail';
 
 const ICON_EXTS = require('../file/FileIcons');
 
